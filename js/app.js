@@ -36,14 +36,34 @@ getstarships(3).then( data => {
     log("Result of getstarships/3", data);
 });
 
-getVehicle(1).then(data => {
-    log("Result of getVehicle/1",data);
-});
+// getVehicle(1).then(data => {
+//     log("Result of getVehicle/1",data);
+// });
 
-getVehicles(1).then(data => {
-    log("Result of getVehicles/1",data);
-});
+// getVehicles(1).then(data => {
+//     log("Result of getVehicles/1",data);
+// });
 
 getSpecies(1).then(data => {
     log("Result of getSpecies/1",data);
+})
+
+getAllSpecies().then(data => {
+    log("Result of getAllSpecies",data);
+})
+
+getPlanet(4).then(data => {
+    log("Result of getPlanet/2",data);
+})
+
+getPlanets(2).then(data => {
+    log("Result of getPlanets/2",data);
+})
+
+getVehicle(4).then(data => {
+    log("véhicule récupérer/1", data);
+})
+
+getVehicles().then(data => {
+    log("Result of getVehicles/1", data);
 })

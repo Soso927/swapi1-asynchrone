@@ -1,5 +1,43 @@
 // au début de ce code, il y a l'url de l'api de swapi qui a été récupéré 
 const rootURL = "https://www.swapi.tech/api/";
+
+async function request(url) {
+    console.log("request", url)
+    try {
+        const response = await fetch(url)
+        const data = await response.json();
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+ function singularRequestGenerator(path, id){
+    console.log("SingularRequestGenerator");
+    const url = new URL(rootURL + path + id + "/");
+    return url;
+
+}
+
+function pluralRequestGenerator(path, queryObject){
+    console.log("pluralRequestGenerator");
+    const url = new URL(rootURL + path + "/");
+    if(queryObject){
+        for (let key of Object.keys(queryObject)){
+            let value = queryObject[key];
+            url.searchParams.append(key,value);
+            console.log(key);
+            console.log(value);
+        }
+    }
+    return url;
+}
+
+
+
+
 // la fonction getResources a été créer avec async qui permet retourner une promesse. dans cette fonction une url a été récupérée. avec la méthode fetch, elle envoie une requête HTTP. le résultat est ajouté dans response grâce au const. si l'api est par exemple hors ligne alors elle retourne une erreur. 
 async function getResources() {
     const url = new URL(rootURL);
@@ -9,7 +47,8 @@ async function getResources() {
 }
 // dans ces deux fonctions suivantes elle suivent le même procédé que la fonction précédente. 
 async function getPerson(id) {
-    const url = new URL(rootURL + "people/" + id + "/");
+    // const url = new URL(rootURL + "people/" + id + "/");
+    const url = singularRequestGenerator("people/", id)
     // const data = request(url);
     // return data;
     return request(url);
@@ -26,7 +65,8 @@ async function getPerson(id) {
 
 async function getFilm(id) {
     console.log("getFilm")
-    const url = new URL(rootURL + "films/" + id + "/")
+    const url = singularRequestGenerator("films/", id)
+    // const url = new URL(rootURL + "films/" + id + "/")
     // const data = request(url);
     // return data;
     return request(url);
@@ -41,16 +81,16 @@ async function getFilm(id) {
 }
 // cette fonction permet de récupérer des informations sur des personnes sur une API et elle est asynchrone pour ne pas bloquer le programme pendant l'appel. 
 async function getPeople(queryObject) {
-    const url = new URL(rootURL + "people");
-    if (queryObject) {
-        for (let key of Object.keys(queryObject)) {
-            let value = queryObject[key];
-            url.searchParams.append(key, value);
-        }
-    }
+    const url = pluralRequestGenerator("people", queryObject)
+    // if (queryObject) {
+    //     for (let key of Object.keys(queryObject)) {
+    //         let value = queryObject[key];
+    //         url.searchParams.append(key, value);
+    //     }
+    // }
     // const data = request(url);
     // return data;
-    return request(url);
+    return url;
     // try {
     //     const response = await fetch(url);
     //     const data = await response.json();
@@ -60,14 +100,16 @@ async function getPeople(queryObject) {
     //     console.log(error);
     // }
 }
+
 async function getFilms(objectQuery) {
-    const url = new URL(rootURL + "films");
-    if (objectQuery) {
-        for (let key of Object.keys(objectQuery)) {
-            let value = objectQuery[key];
-            url.searchParams.append(key, value);
-        }
-    }
+    // const url = new URL(rootURL + "films");
+    const url = pluralRequestGenerator("films/", objectQuery);
+    // if (objectQuery) {
+    //     for (let key of Object.keys(objectQuery)) {
+    //         let value = objectQuery[key];
+    //         url.searchParams.append(key, value);
+    //     }
+    // }
     // const data = request(url);
     // return data;
     return request(url);
@@ -86,7 +128,7 @@ async function getstarship(id) {
     console.log("getstarship"); // Affiche dans la console un message pour indiquer que la fonction a été appelée
 
     // Construit une URL en concaténant rootURL avec le chemin vers une ressource "starships" et l'identifiant fourni
-    const url = new URL(rootURL + "starships/" + id + "/");
+    const url = singularRequestGenerator("starships/", id);
     // const data = request(url);
     // return data;
     return request(url);
@@ -108,16 +150,18 @@ async function getstarship(id) {
 
 async function getstarships(objectQuery) {
     console.log("getstarships")
-    const url = new URL(rootURL + "starships");
-    if (objectQuery) {
-        for (let key of Object.keys(objectQuery)) {
-            let value = objectQuery[key];
-            url.searchParams.append(key, value);
-        }
-    }
+    const url = pluralRequestGenerator("starships", objectQuery)
+    return url;
+    // const url = new URL(rootURL + "starships");
+    // if (objectQuery) {
+    //     for (let key of Object.keys(objectQuery)) {
+    //         let value = objectQuery[key];
+    //         url.searchParams.append(key, value);
+    //     }
+    // }
     // const data = request(url);
     // return data;
-    return request(url);
+    // return request(url);
     // try {
     //     const response = await fetch(url);
     //     const data = await response.json();
@@ -146,54 +190,51 @@ async function getstarships(objectQuery) {
 //     }
 // }
 
-async function request(url) {
-    console.log("request", url)
-    try {
-        const response = await fetch(url)
-        const data = await response.json();
-        return data;
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
+
 async function getVehicle(id) {
     console.log("getVehicle");
-    const url = new URL(rootURL + "vehicles/" + id + "/");
-    try {
-        const response = await fetch(url)
-        const data = await response.json();
-        return data;
-    }
-    catch (error) {
-        console.log(error);
-    }
+    // const url = new URL(rootURL + "vehicles/" + id + "/");
+    const url = singularRequestGenerator("vehicles/",id);
+    console.log(singularRequestGenerator("vehicles/",id));
+    // try {
+    //     const response = await fetch(url)
+    //     const data = await response.json();
+    //     return data;
+    // }
+    // catch (error) {
+    //     console.log(error);
+    // }
 
     // const data = request(url);
     // return data;
-    // return request(url);
+     return request(url);
+
 }
+
+
 
 async function getVehicles(objectQuery) {
     console.log("getvehicles")
-    const url = new URL(rootURL + "vehicles");
-    if (objectQuery) {
-        for (let key of Object.keys(objectQuery)) {
-            let value = objectQuery[key];
-            url.searchParams.append(key, value);
-        }
-    }
+    const url = pluralRequestGenerator("vehicles/", objectQuery);
+    return url;
+    // const url = new URL(rootURL + "vehicles");
+    // if (objectQuery) {
+    //     for (let key of Object.keys(objectQuery)) {
+    //         let value = objectQuery[key];
+    //         url.searchParams.append(key, value);
+    //     }
+    // }
     // const data = request(url);
     // return data;
     // return request(url);
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data;
-    }
-    catch (error) {
-        console.log(error);
-    }
+    // try {
+    //     const response = await fetch(url);
+    //     const data = await response.json();
+    //     return data;
+    // }
+    // catch (error) {
+    //     console.log(error);
+    // }
 }
 
 async function getSpecies(id){
@@ -207,4 +248,70 @@ async function getSpecies(id){
     catch (error) {
         console.log(error);
     }
+}
+
+async function getAllSpecies(objectQuery){
+    console.log("getAllSpecies")
+    const url = pluralRequestGenerator("species", objectQuery)
+    return url;
+    // const url = new URL (rootURL + "species/");
+    // if (objectQuery) {
+    //     for (let key of Object.keys(objectQuery)) {
+    //         let value = objectQuery[key];
+    //         url.searchParams.append(key, value);
+    //     }
+    // }
+    // const data = request(url);
+    // return data;
+    // return request(url);
+    // try {
+    //     const response = await fetch(url);
+    //     const data = await response.json();
+    //     return data;
+    // }
+    // catch (error) {
+    //     console.log(error);
+    // }
+}
+
+async function getPlanet(id){
+    console.log("getPlanet")
+    // const url = new URL (rootURL + "planets" + id + "/");
+    const url = singularRequestGenerator("planet/", id);
+    // try {
+    //     const response = await fetch(url)
+    //     const data = await response.json();
+    //     return data;
+    // }
+    // catch (error) {
+    //     console.log(error);
+    // }
+
+    // const data = request(url);
+    // return data;
+    return request(url);
+}
+
+async function getPlanets(objectQuery){
+    console.log("getPlanets")
+    const url = pluralRequestGenerator("planet/", objectQuery);
+    return url;
+    // const url = new URL(rootURL + "planets/"); 
+    // if (objectQuery) {
+    //     for (let key of Object.keys(objectQuery)) {
+    //         let value = objectQuery[key];
+    //         url.searchParams.append(key, value);
+    //     }
+    // }
+    // const data = request(url);
+    // return data;
+    // return request(url);
+    // try {
+    //     const response = await fetch(url);
+    //     const data = await response.json();
+    //     return data;
+    // }
+    // catch (error) {
+    //     console.log(error);
+    // }
 }

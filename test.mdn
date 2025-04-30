@@ -1,0 +1,25 @@
+function pluralRequestGenerator(path, queryObject) {
+    const url = new URL(rootURL + path + "/");
+    if (queryObject) {
+        for (let key of Object.keys(queryObject)) {
+            let value = queryObject[key];
+            url.searchParams.append(key, value);
+            // console.log(key);
+            // console.log(value);
+        }
+    }
+    // console.log(url);
+    return url;
+}
+ 
+function getPerson(id) {
+    const url = singularRequestGenerator("people/", id);
+    // console.log(singularRequestGenerator("people/", id))
+    return request(url);
+}
+ 
+function getPeople(queryObject) {
+    const url = pluralRequestGenerator("people", queryObject);
+    return request(url);
+}
+ 
